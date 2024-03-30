@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: medusa_backend
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  nodejs:
+    build: .
+    ports:
+      - "9000:9000"
+    environment:
+      DATABASE_URL: postgres://postgres:root@postgres:5432/medusa_backend
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
