@@ -1,7 +1,7 @@
 
 resource "aws_ecs_cluster" "medusa_cluster" {
   name             = "medusa-ecs-cluster"
-  capacity_providers = ["FARGATE"]
+  # capacity_providers = ["FARGATE"]
   
   tags = {
     Environment = "Production"
@@ -16,29 +16,29 @@ resource "aws_ecs_cluster" "medusa_cluster" {
 resource "aws_ecs_task_definition" "medusa_task_definition" {
   family                   = "ecs-medusa"
   network_mode             = "awsvpc"
-  cpu                      = "256"  # CPU units for the task
-  memory                   = "512"  # Memory limit for the task in MB
+  cpu                      = "256"  
+  memory                   = "512"  
 
   container_definitions = jsonencode([
     {
       name      = "medusa-backend-project"
-      image     = ":latest"       
+      image     = "medusa_backend:latest"       
       environment = [
         {
           name  = "RDS_DB_HOSTNAME"
-          value = "localhost"  # Replace with your PostgreSQL host
+          value = "localhost"  
         },
         {
           name  = "RDS_DB_NAME"
-          value = "medusa_backend"  # Replace with your PostgreSQL database name
+          value = "medusa_backend"  
         },
         {
           name  = "RDS_DB_USER"
-          value = "postgres"  # Replace with your PostgreSQL username
+          value = "postgres"  
         },
         {
-          name  = "RDS_DB_PASSWORD"
-          value = var.RDS_DB_PASSWORD  # Replace with your PostgreSQL password
+          name  = "RDS_PASSWORD"
+          value = var.RDS_PASSWORD  
         },
       ]
 
